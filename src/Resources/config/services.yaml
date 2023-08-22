@@ -8,5 +8,5 @@ services:
         bind:
             $projectDir: '%kernel.project_dir%'
 
-    Insitaction\EasyCropBundle\Form\Field\:
-        resource: '../../Form/Field/'
+    Insitaction\EasyCropBundle\Form\:
+        resource: '../../Form'
