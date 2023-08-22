@@ -5,6 +5,8 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            $projectDir: '%kernel.project_dir%'
 
     Insitaction\EasyCropBundle\Form\Field\:
         resource: '../../Form/Field/'
