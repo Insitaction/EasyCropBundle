@@ -2,4 +2,4 @@
 .vscode
 /.php-cs-fixer.cache
 /phpstan.neon
-/.php-cs-fixer.php
+/node_modules/

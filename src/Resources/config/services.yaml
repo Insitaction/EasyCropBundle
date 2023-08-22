@@ -6,4 +6,5 @@ services:
         autoconfigure: true
         public: false
 
-   
+    Insitaction\EasyCropBundle\Form\Field\:
+        resource: '../../Form/Field/'

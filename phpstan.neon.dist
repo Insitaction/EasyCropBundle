@@ -6,6 +6,6 @@ parameters:
         - ./vendor/autoload.php
     parallel:
         maximumNumberOfProcesses: 3
-    level: max
+    level: 7
     paths:
         - src
