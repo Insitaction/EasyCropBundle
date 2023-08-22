@@ -24,7 +24,7 @@ class EasyCropExtension extends Extension implements PrependExtensionInterface
             $container->prependExtensionConfig('framework', [
                 'asset_mapper' => [
                     'paths' => [
-                        __DIR__.'/../../assets/dist' => 'insitaction/easycrop',
+                        __DIR__.'/../Resources/public' => 'insitaction/easycrop',
                     ],
                 ],
             ]);
