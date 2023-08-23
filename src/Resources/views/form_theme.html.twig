@@ -12,6 +12,16 @@
                     {% set title = (currentFiles|first).mTime|date %}
                 {% endif %}
             {% endif %}
+            {% if currentFiles %}
+                {% if multiple %}
+                    {% set size = (currentFiles|reduce((carry, file) => carry + file.size))|ea_filesize %}
+                {% else %}
+                    {% set size = (currentFiles|first).size|ea_filesize %}
+                {% endif %}
+            {% else %}
+                {% set size = null %}
+            {% endif %}
+
             <div class="custom-file" {{ stimulus_controller('crop', {
                 formFile: {
                     id: form.file.vars.id,
@@ -31,57 +41,21 @@
                     for: form.file.vars.id,
                     class: 'custom-file-label required' ~ form.file.vars.row_attr.class,
                 },
-                cropBtn: 'action.crop'|trans([], form.file.vars.translation_domain)
-            }) }}></div>
+                cropBtn: 'action.crop'|trans([], form.file.vars.translation_domain),
+                render: {
+                    download_path: download_path,
+                    currentFiles: currentFiles,
+                    size: size,
+                    allow_delete: allow_delete,
+                    deleteId: form.delete.vars.id,
+                }
+            }) }}
+            ></div>
 
-            <div class="input-group-text">
-                {%- if currentFiles -%}
-                    {% if multiple %}
-                        {{ (currentFiles|reduce((carry, file) => carry + file.size))|ea_filesize }}
-                    {% else %}
-                        {{ (currentFiles|first).size|ea_filesize }}
-                    {% endif %}
-
-                {%- endif -%}
-                {% if allow_delete %}
-                    <label class="btn ea-fileupload-delete-btn {{ currentFiles is empty ? 'd-none' }}" title="delete" for="{{ form.delete.vars.id }}">
-                        <i class="fa fa-trash-o"></i>
-                    </label>
-                {% endif %}
-                <label class="btn" title="upload" for="{{ form.file.vars.id }}">
-                    <i class="fa fa-folder-open-o"></i>
-                </label>
-
-            </div>
+            {% if allow_delete %}
+                <div class="d-none">{{ form_widget(form.delete, { label: false }) }}</div>
+            {% endif %}
         </div>
-        </div>
-
-            <div class="form-control fileupload-list">
-                <table class="fileupload-table">
-                    <tbody>
-                    {% for file in currentFiles %}
-                        <tr>
-                            <td>
-                                {% if download_path %}<a href="{{ asset(download_path ~ file.filename) }}">
-                                    {% if file.extension in ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'tif', 'ico'] %}
-                                        <img style="max-width: 100%; max-height: 200px" src="{{ asset(download_path ~ file.filename) }}">
-                                    {% endif %}
-                                    <span title="{{ file.mTime|date }}">
-                                        <i class="fa fa-file-o"></i> {{ file.filename }}
-                                    </span>
-                                    </a>
-                                {% endif %}
-                            </td>
-                            <td class="text-right file-size">{{ file.size|ea_filesize }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-
-        {% if allow_delete %}
-            <div class="d-none">{{ form_widget(form.delete, { label: false }) }}</div>
-        {% endif %}
+        {{ form_errors(form.file) }}
     </div>
-    {{ form_errors(form.file) }}
 {% endblock %}

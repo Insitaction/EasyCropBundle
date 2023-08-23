@@ -7,13 +7,14 @@ export default class extends Controller {
     formFile: Object,
     formLabel: Object,
     formCropped: Object,
+    render: Object,
     cropBtn: String,
   };
 
   connect() {
     import('react-dom').then((ReactDOM) => {
       ReactDOM.default.render(
-          <CropperJs cropBtn={this.cropBtnValue} formCropped={this.formCroppedValue} formFile={this.formFileValue} formLabel={this.formLabelValue}/>,
+          <CropperJs renderData={this.renderValue} cropBtn={this.cropBtnValue} formCropped={this.formCroppedValue} formFile={this.formFileValue} formLabel={this.formLabelValue}/>,
           this.element,
       );
     });

@@ -1,12 +1,19 @@
-import React, { useState, useRef } from "react";
-import Cropper, { ReactCropperElement } from "react-cropper";
+import React, {useState, useRef} from "react";
+import Cropper, {ReactCropperElement} from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {Box, Modal, Typography} from "@mui/material";
 import {FormInput} from "../Type/FormInput";
 import {FormCropped} from "../Type/FormCropped";
 import {FormLabel} from "../Type/FormLabel";
+import {RenderData} from "../Type/RenderData";
 
-export const CropperJs: React.FC = (props: { cropBtn?: String; formFile?: FormInput; formLabel?: FormLabel; formCropped?: FormCropped }) => {
+export const CropperJs: React.FC = (props: {
+    cropBtn?: String;
+    renderData?: RenderData;
+    formFile?: FormInput;
+    formLabel?: FormLabel;
+    formCropped?: FormCropped
+}) => {
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const [image, setImage] = useState("");
@@ -46,6 +53,11 @@ export const CropperJs: React.FC = (props: { cropBtn?: String; formFile?: FormIn
             // @ts-ignore
             setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
         }
+        let preview = document.getElementById("preview-" + props.formCropped?.id)
+
+        if (null !== preview) {
+           // preview.innerHTML = '<tr><td><img src="' + cropperRef.current?.cropper.getCroppedCanvas().toDataURL() + '" </td></tr>'
+        }
         setOpen(false)
     };
 
@@ -67,14 +79,57 @@ export const CropperJs: React.FC = (props: { cropBtn?: String; formFile?: FormIn
                 required={props.formFile.required}
             />
             <input type={"hidden"}
-                className={props.formCropped.class}
-                name={props.formCropped.name}
-                id={props.formCropped.id}
-                value={cropData}
-                required={props.formCropped.required}
+                   className={props.formCropped.class}
+                   name={props.formCropped.name}
+                   id={props.formCropped.id}
+                   value={cropData}
+                   required={props.formCropped.required}
             />
-            <label htmlFor={props.formLabel.for} className={props.formLabel.class}></label>
+            <label htmlFor={props.formLabel.for} className={"test" + props.formLabel.class}></label>
+            <div className="input-group-text">
+                {props.renderData?.size}
+                {
+                    props.renderData?.allow_delete &&
+                  <label className="btn ea-fileupload-delete-btn {{ currentFiles is empty ? 'd-none' }}" title="delete"
+                         htmlFor={props.renderData?.deleteId}>
+                    <i className="fa fa-trash-o"></i>
+                  </label>
 
+                }
+
+                <label className="btn" title="upload" htmlFor={props.formFile?.id}>
+                    <i className="fa fa-folder-open-o"></i>
+                </label>
+
+            </div>
+
+            <div className=" form-control fileupload-list">
+                <table className=" fileupload-table">
+                    <tbody>
+
+                    {
+                        props.renderData?.currentFiles?.map(function (file, i) {
+                            return <tr>
+                                <td>
+                                    <a href={props.renderData?.download_path + file.filename}>
+                                        {
+                                            ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'tif', 'ico'].includes(file.extension) &&
+                                          <img style={{maxWidth: "100%", maxHeight: "200px"}}
+                                               src={props.renderData?.download_path + file.filename}/>
+                                        }
+                                        <span title="{{ file.mTime|date }}">
+                                        <i className="fa fa-file-o"></i> {file.filename}
+                                    </span>
+                                    </a>
+
+                                </td>
+                                <td className="text-right file-size">{file.size}</td>
+                            </tr>
+                        })
+                    }
+                    </tbody>
+                </table>
+            </div>
 
             <Modal
                 open={open}
@@ -83,39 +138,38 @@ export const CropperJs: React.FC = (props: { cropBtn?: String; formFile?: FormIn
                 aria-describedby="modal-modal-description"
             >
                 <Box sx={style}>
-                    <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-
-
-            <div style={{ width: "100%" }}>
-                <Cropper
-                    style={{ height: 400, width: "100%" }}
-                    initialAspectRatio={1}
-                    preview=".img-preview"
-                    src={image}
-                    ref={cropperRef}
-                    viewMode={1}
-                    guides={true}
-                    minCropBoxHeight={10}
-                    minCropBoxWidth={10}
-                    background={false}
-                    responsive={true}
-                    checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
-                />
-            </div>
-            <div style={{ textAlign: "center", padding: "20px" }}>
-                <button className="btn btn-primary action-save" onClick={getCropData}>
+                    <Typography id="modal-modal-description" sx={{mt: 2}}>
+                        <div style={{width: "100%"}}>
+                            <Cropper
+                                style={{height: 400, width: "100%"}}
+                                initialAspectRatio={1}
+                                preview=".img-preview"
+                                src={image}
+                                ref={cropperRef}
+                                viewMode={1}
+                                guides={true}
+                                minCropBoxHeight={10}
+                                minCropBoxWidth={10}
+                                background={false}
+                                responsive={true}
+                                checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
+                            />
+                        </div>
+                        <div style={{textAlign: "center", padding: "20px"}}>
+                            <button className="btn btn-primary action-save" onClick={getCropData}>
                     <span className="btn-label">
                         <i className="action-icon fa fa-crop"></i>
                         <span className="action-label">  {props.cropBtn}</span>
                     </span>
-                </button>
-            </div>
-            <br style={{ clear: "both" }} />
+                            </button>
+                        </div>
+                        <br style={{clear: "both"}}/>
                     </Typography>
                 </Box>
             </Modal>
         </div>
-    );
+    )
+        ;
 };
 
 export default CropperJs;
