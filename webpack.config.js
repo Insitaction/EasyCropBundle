@@ -15,6 +15,7 @@ Encore
     .enableBuildNotifications()
     .enableSourceMaps(false)
     .enableVersioning(true)
+    .enableSassLoader()
     .configureBabel((config) => {
         config.plugins.push('@babel/plugin-proposal-class-properties');
     })
