@@ -24,10 +24,10 @@
         {% set currentFilesData = [] %}
         {% for currentFile in currentFiles %}
             {% set currentFilesData = currentFilesData|merge([{
-                "filename": download_path ~ currentFile.filename,
+                "filepath": download_path ~ currentFile.filename,
                 "size": currentFile.size|ea_filesize,
                 "extension": currentFile.extension,
-                "filepath": currentFile.filename,
+                "filename": currentFile.filename,
             }]) %}
         {% endfor %}
 
