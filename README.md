@@ -2,7 +2,10 @@
 
 # EasyCrop Bundle
 
+![EasycropBundle](./doc/easycrop.png)
+
 The EasyCrop Bundle is a specialized Symfony bundle designed to seamlessly enhance the image handling capabilities of [EasyAdmin](https://github.com/EasyCorp/EasyAdminBundle). This bundle offers a straightforward way to integrate image uploading and cropping functionalities into your application. At its core, the EasyCrop Bundle introduces a custom field type named `CropField`, meticulously crafted to bring cropping functionalities to your EasyAdmin-powered application. This field type, built upon the foundation of `EasyCorp\Bundle\EasyAdminBundle\Field\ImageField`, adds the convenience of image cropping while maintaining compatibility with the core classes of [EasyAdmin](https://github.com/EasyCorp/EasyAdminBundle)
+
 ## Installation
 
 You can install the EasyCrop Bundle using Composer:
