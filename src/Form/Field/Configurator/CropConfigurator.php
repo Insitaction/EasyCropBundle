@@ -30,6 +30,7 @@ final class CropConfigurator implements FieldConfiguratorInterface
     {
         $package = new Package(new JsonManifestVersionStrategy($this->projectDir.'/public/bundles/easycrop/manifest.json'));
         $field->addJsAsset(new AssetDto($package->getUrl('easycropbundle.js')));
+        $field->addCssAsset(new AssetDto($package->getUrl('easycropbundle.css')));
 
         $configuredBasePath = $field->getCustomOption(ImageField::OPTION_BASE_PATH);
 
