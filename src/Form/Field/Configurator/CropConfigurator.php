@@ -5,11 +5,14 @@ namespace Insitaction\EasyCropBundle\Form\Field\Configurator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldConfiguratorInterface;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\AssetDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\FieldDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\ImageField;
 use Insitaction\EasyCropBundle\Form\Field\CropField;
 use InvalidArgumentException;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 use function Symfony\Component\String\u;
@@ -25,6 +28,9 @@ final class CropConfigurator implements FieldConfiguratorInterface
 
     public function configure(FieldDto $field, EntityDto $entityDto, AdminContext $context): void
     {
+        $package = new Package(new JsonManifestVersionStrategy($this->projectDir.'/public/bundles/easycrop/manifest.json'));
+        $field->addJsAsset(new AssetDto($package->getUrl('easycropbundle.js')));
+
         $configuredBasePath = $field->getCustomOption(ImageField::OPTION_BASE_PATH);
 
         $formattedValue = \is_array($field->getValue())
