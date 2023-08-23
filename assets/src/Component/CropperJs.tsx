@@ -117,7 +117,6 @@ export const CropperJs: React.FC = (props: {
                     {
                         previewImages.map(function (file, i) {
                             if (typeof file === 'string') {
-                                console.log(file)
                                 return <tr>
                                     <td><img style={{maxWidth: "100%", maxHeight: "200px"}}
                                              src={file}/></td>
