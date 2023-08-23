@@ -1,61 +1,68 @@
 {% block ea_filecropupload_widget %}
     <div class="ea-fileupload">
-        <div class="input-group">
-            {% set placeholder = t('action.choose_file', {}, 'EasyAdminBundle') %}
-            {% set title = '' %}
-            {% set filesLabel = 'files'|trans({}, 'EasyAdminBundle') %}
-            {% if currentFiles %}
-                {% if multiple %}
-                    {% set placeholder = currentFiles|length ~ ' ' ~ filesLabel %}
-                {% else %}
-                    {% set placeholder = (currentFiles|first).filename %}
-                    {% set title = (currentFiles|first).mTime|date %}
-                {% endif %}
-            {% endif %}
-            {% if currentFiles %}
-                {% if multiple %}
-                    {% set size = (currentFiles|reduce((carry, file) => carry + file.size))|ea_filesize %}
-                {% else %}
-                    {% set size = (currentFiles|first).size|ea_filesize %}
-                {% endif %}
+        {% set placeholder = t('action.choose_file', {}, 'EasyAdminBundle') %}
+        {% set title = '' %}
+        {% set filesLabel = 'files'|trans({}, 'EasyAdminBundle') %}
+        {% if currentFiles %}
+            {% if multiple %}
+                {% set placeholder = currentFiles|length ~ ' ' ~ filesLabel %}
             {% else %}
-                {% set size = null %}
+                {% set placeholder = (currentFiles|first).filename %}
+                {% set title = (currentFiles|first).mTime|date %}
             {% endif %}
-
-            <div class="custom-file" {{ stimulus_controller('crop', {
-                formFile: {
-                    id: form.file.vars.id,
-                    name: form.file.vars.full_name,
-                    required: form.file.vars.required,
-                    placeholder: placeholder,
-                    title: title,
-                    class: 'd-none ' ~ form.file.vars.row_attr.class,
-                },
-                formCropped: {
-                    id: form.cropped.vars.id,
-                    name: form.cropped.vars.full_name,
-                    required: form.cropped.vars.required,
-                    class: 'd-none',
-                },
-                formLabel: {
-                    for: form.file.vars.id,
-                    class: 'custom-file-label required' ~ form.file.vars.row_attr.class,
-                },
-                cropBtn: 'action.crop'|trans([], form.file.vars.translation_domain),
-                render: {
-                    download_path: download_path,
-                    currentFiles: currentFiles,
-                    size: size,
-                    allow_delete: allow_delete,
-                    deleteId: form.delete.vars.id,
-                }
-            }) }}
-            ></div>
-
-            {% if allow_delete %}
-                <div class="d-none">{{ form_widget(form.delete, { label: false }) }}</div>
+        {% endif %}
+        {% if currentFiles %}
+            {% if multiple %}
+                {% set size = (currentFiles|reduce((carry, file) => carry + file.size))|ea_filesize %}
+            {% else %}
+                {% set size = (currentFiles|first).size|ea_filesize %}
             {% endif %}
-        </div>
-        {{ form_errors(form.file) }}
+        {% else %}
+            {% set size = null %}
+        {% endif %}
+
+        {% set currentFilesData = [] %}
+        {% for currentFile in currentFiles %}
+            {% set currentFilesData = currentFilesData|merge([{
+                "filename": download_path ~ currentFile.filename,
+                "size": currentFile.size|ea_filesize,
+                "extension": currentFile.extension,
+                "filepath": currentFile.filename,
+            }]) %}
+        {% endfor %}
+
+        <div {{ stimulus_controller('crop', {
+            formFile: {
+                id: form.file.vars.id,
+                name: form.file.vars.full_name,
+                required: form.file.vars.required,
+                placeholder: placeholder,
+                title: title,
+                class: 'd-none ' ~ form.file.vars.row_attr.class,
+            },
+            formCropped: {
+                id: form.cropped.vars.id,
+                name: form.cropped.vars.full_name,
+                required: form.cropped.vars.required,
+                class: 'd-none',
+            },
+            formLabel: {
+                for: form.file.vars.id,
+                class: 'custom-file-label required' ~ form.file.vars.row_attr.class,
+            },
+            cropBtn: 'action.crop'|trans([], form.file.vars.translation_domain),
+            render: {
+                currentFiles: currentFilesData,
+                size: size,
+                allow_delete: allow_delete,
+                deleteId: form.delete.vars.id,
+            }
+        }) }}
+        ></div>
+
+        {% if allow_delete %}
+            <div class="d-none">{{ form_widget(form.delete, { label: false }) }}</div>
+        {% endif %}
     </div>
+    {{ form_errors(form.file) }}
 {% endblock %}

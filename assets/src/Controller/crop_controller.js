@@ -12,6 +12,7 @@ export default class extends Controller {
   };
 
   connect() {
+    console.log(this.renderValue)
     import('react-dom').then((ReactDOM) => {
       ReactDOM.default.render(
           <CropperJs renderData={this.renderValue} cropBtn={this.cropBtnValue} formCropped={this.formCroppedValue} formFile={this.formFileValue} formLabel={this.formLabelValue}/>,

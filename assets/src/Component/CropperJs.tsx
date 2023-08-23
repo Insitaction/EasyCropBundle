@@ -1,4 +1,4 @@
-import React, {useState, useRef} from "react";
+import React, {useState, useRef, useEffect} from "react";
 import Cropper, {ReactCropperElement} from "react-cropper";
 import "cropperjs/dist/cropper.css";
 import {Box, Modal, Typography} from "@mui/material";
@@ -6,6 +6,7 @@ import {FormInput} from "../Type/FormInput";
 import {FormCropped} from "../Type/FormCropped";
 import {FormLabel} from "../Type/FormLabel";
 import {RenderData} from "../Type/RenderData";
+import {File} from "../Type/File";
 
 export const CropperJs: React.FC = (props: {
     cropBtn?: String;
@@ -17,8 +18,16 @@ export const CropperJs: React.FC = (props: {
     const [open, setOpen] = React.useState(false);
     const handleClose = () => setOpen(false);
     const [image, setImage] = useState("");
+    const [previewImages, setPreviewImages] = useState<File[]|string[]>([]);
     const [cropData, setCropData] = useState("");
     const cropperRef = useRef<ReactCropperElement>(null);
+
+    useEffect(() => {
+        if (undefined !== props.renderData?.currentFiles) {
+            setPreviewImages(props.renderData?.currentFiles);
+        }
+    }, [props]);
+
     const onChange = (e: any) => {
         e.preventDefault();
         let files;
@@ -52,12 +61,9 @@ export const CropperJs: React.FC = (props: {
         if (typeof cropperRef.current?.cropper !== "undefined") {
             // @ts-ignore
             setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL());
+            setPreviewImages([cropperRef.current?.cropper.getCroppedCanvas().toDataURL()]);
         }
-        let preview = document.getElementById("preview-" + props.formCropped?.id)
 
-        if (null !== preview) {
-           // preview.innerHTML = '<tr><td><img src="' + cropperRef.current?.cropper.getCroppedCanvas().toDataURL() + '" </td></tr>'
-        }
         setOpen(false)
     };
 
@@ -68,6 +74,7 @@ export const CropperJs: React.FC = (props: {
 
     return (
         <div>
+            <div className={"input-group"}>
             <input
                 type={"file"}
                 className={props.formFile.class}
@@ -85,7 +92,7 @@ export const CropperJs: React.FC = (props: {
                    value={cropData}
                    required={props.formCropped.required}
             />
-            <label htmlFor={props.formLabel.for} className={"test" + props.formLabel.class}></label>
+            <label htmlFor={props.formLabel.for} className={props.formLabel.class}></label>
             <div className="input-group-text">
                 {props.renderData?.size}
                 {
@@ -102,20 +109,34 @@ export const CropperJs: React.FC = (props: {
                 </label>
 
             </div>
-
+            </div>
             <div className=" form-control fileupload-list">
-                <table className=" fileupload-table">
+                <table className="fileupload-table">
                     <tbody>
 
                     {
-                        props.renderData?.currentFiles?.map(function (file, i) {
+                        previewImages.map(function (file, i) {
+                            if (typeof file === 'string') {
+                                console.log(file)
+                                return <tr>
+                                    <td><img style={{maxWidth: "100%", maxHeight: "200px"}}
+                                             src={file}/></td>
+                                </tr>
+                            }
+
+                            if (undefined === file.filename) {
+                                return <></>
+                            }
+
+                            const url = window.location.protocol + '//' + window.location.hostname + '/' + file.filepath
+
                             return <tr>
                                 <td>
-                                    <a href={props.renderData?.download_path + file.filename}>
+                                    <a href={url}>
                                         {
                                             ['jpg', 'jpeg', 'png', 'gif', 'webp', 'svg', 'bmp', 'tiff', 'tif', 'ico'].includes(file.extension) &&
                                           <img style={{maxWidth: "100%", maxHeight: "200px"}}
-                                               src={props.renderData?.download_path + file.filename}/>
+                                               src={url}/>
                                         }
                                         <span title="{{ file.mTime|date }}">
                                         <i className="fa fa-file-o"></i> {file.filename}
