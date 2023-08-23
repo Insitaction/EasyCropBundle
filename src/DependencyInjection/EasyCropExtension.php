@@ -19,31 +19,6 @@ class EasyCropExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['TwigBundle'])) {
             $container->prependExtensionConfig('twig', ['form_themes' => ['@EasyCrop/form_theme.html.twig']]);
         }
-
-        if ($this->isAssetMapperAvailable($container)) {
-            $container->prependExtensionConfig('framework', [
-                'asset_mapper' => [
-                    'paths' => [
-                        __DIR__.'/../Resources/public' => 'insitaction/easycrop',
-                    ],
-                ],
-            ]);
-        }
-    }
-
-    private function isAssetMapperAvailable(ContainerBuilder $container): bool
-    {
-        if (!interface_exists(AssetMapperInterface::class)) {
-            return false;
-        }
-
-        // check that FrameworkBundle 6.3 or higher is installed
-        $bundlesMetadata = $container->getParameter('kernel.bundles_metadata');
-        if (!isset($bundlesMetadata['FrameworkBundle'])) {
-            return false;
-        }
-
-        return is_file($bundlesMetadata['FrameworkBundle']['path'].'/Resources/config/asset_mapper.php');
     }
 
     public function load(array $configs, ContainerBuilder $container): void
