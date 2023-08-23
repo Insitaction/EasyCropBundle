@@ -1,8 +1,8 @@
 {% block ea_filecropupload_widget %}
     <div class="ea-fileupload">
-        {% set placeholder = t('action.choose_file', {}, 'EasyAdminBundle') %}
+        {% set placeholder = t('action.choose_file', {}, 'EasyCropBundle') %}
         {% set title = '' %}
-        {% set filesLabel = 'files'|trans({}, 'EasyAdminBundle') %}
+        {% set filesLabel = 'files'|trans({}, 'EasyCropBundle') %}
         {% if currentFiles %}
             {% if multiple %}
                 {% set placeholder = currentFiles|length ~ ' ' ~ filesLabel %}
@@ -50,7 +50,7 @@
                 for: form.file.vars.id,
                 class: 'custom-file-label required' ~ form.file.vars.row_attr.class,
             },
-            cropBtn: 'action.crop'|trans([], form.file.vars.translation_domain),
+            cropBtn: 'action.crop'|trans([], 'EasyCropBundle'),
             render: {
                 currentFiles: currentFilesData,
                 size: size,
