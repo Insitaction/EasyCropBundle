@@ -76,4 +76,26 @@ final class CropField implements FieldInterface
 
         return $this;
     }
+
+    public function setFormTypeOptions(array $options): self
+    {
+        if (array_key_exists('multiple', $options)) {
+            throw new \Exception('The multiple option is currently not supported by CropField.');
+        }
+
+        $this->dto->setFormTypeOptions($options);
+
+        return $this;
+    }
+
+    public function setFormTypeOption(string $optionName, $optionValue): self
+    {
+        if ('multiple' === $optionName) {
+            throw new \Exception('The multiple option is currently not supported by CropField.');
+        }
+
+        $this->dto->setFormTypeOption($optionName, $optionValue);
+
+        return $this;
+    }
 }

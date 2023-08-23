@@ -15,6 +15,8 @@ composer require insitaction/easycrop
 
 The primary feature of this bundle is the `CropField`, which enables users to upload images and crop them to their desired dimensions. The core functionality is achieved through the `CropType` form type, a variation of the `EasyCorp\Bundle\EasyAdminBundle\Form\Type\FileUploadType`. The key distinction is that `CropType` incorporates additional logic through a Stimulus controller.
 
+>:warning: The multiple option is currently not supported by `CropField`.
+
 ## Usage
 
 Don't forget to add the theme file for the formatting to be effective
