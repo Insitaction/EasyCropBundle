@@ -1,2 +1,4 @@
 action:
     crop: Crop
+    edit: Edit
+    delete: Delete

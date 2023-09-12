@@ -2,10 +2,10 @@
   "entrypoints": {
     "easycropbundle": {
       "css": [
-        "/bundles/easycrop/easycropbundle.d870dbe2.css"
+        "/bundles/easycrop/easycropbundle.c71f6e0b.css"
       ],
       "js": [
-        "/bundles/easycrop/easycropbundle.53a439a8.js"
+        "/bundles/easycrop/easycropbundle.5fc3c1b3.js"
       ]
     }
   }

@@ -48,21 +48,20 @@
             },
             formLabel: {
                 for: form.file.vars.id,
-                class: 'custom-file-label required' ~ form.file.vars.row_attr.class,
+                class: 'custom-file-label required ' ~ form.file.vars.row_attr.class,
             },
             cropBtn: 'action.crop'|trans([], 'EasyCropBundle'),
+            editBtn: 'action.edit'|trans([], 'EasyCropBundle'),
+            deleteBtn: 'action.delete'|trans([], 'EasyCropBundle'),
             render: {
                 currentFiles: currentFilesData,
                 size: size,
                 allow_delete: allow_delete,
                 deleteId: form.delete.vars.id,
+                deleteName: form.delete.vars.full_name,
             }
         }) }}
         ></div>
-
-        {% if allow_delete %}
-            <div class="d-none">{{ form_widget(form.delete, { label: false }) }}</div>
-        {% endif %}
     </div>
     {{ form_errors(form.file) }}
 {% endblock %}

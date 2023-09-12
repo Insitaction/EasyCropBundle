@@ -3,3 +3,26 @@
     height: 30px;
   }
 }
+
+.hovered-nav-container {
+  position: relative;
+
+  .hovered-nav {
+    position: absolute;
+    width: 100%;
+    display: flex;
+    padding: 15px;
+
+    > div {
+      width: 50%;
+
+      > *:nth-child(1), > *:nth-child(2) {
+        margin-right: 15px;
+      }
+
+      &:nth-child(2) {
+        text-align: right;
+      }
+    }
+  }
+}

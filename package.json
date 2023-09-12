@@ -1,17 +1,16 @@
 {
     "devDependencies": {
         "@babel/core": "^7.22.10",
-        "@babel/eslint-parser": "^7.22.10",
+        "@babel/eslint-parser": "^7.22.15",
         "@babel/plugin-proposal-class-properties": "^7.18.6",
         "@babel/preset-env": "^7.16.0",
-        "@babel/preset-react": "^7.0.0",
-        "@hotwired/stimulus": "^3.0.0",
-        "@symfony/stimulus-bridge": "^3.2.0",
+        "@babel/preset-react": "^7.22.15",
         "@symfony/webpack-encore": "^4.0.0",
         "@types/react": "^18.2.20",
         "@types/react-dom": "^18.2.7",
+        "@typescript-eslint/eslint-plugin": "^6.6.0",
+        "@typescript-eslint/parser": "^6.6.0",
         "core-js": "^3.23.0",
-        "cropperjs": "^1.5.9",
         "eslint": "^8.46.0",
         "eslint-config-airbnb": "^19.0.4",
         "eslint-plugin-import": "^2.28.0",
@@ -20,9 +19,6 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "file-loader": "^6.0.0",
         "postcss-loader": "^7.0.0",
-        "react": "^18.2.0",
-        "react-cropper": "^2.3.3",
-        "react-dom": "^18.2.0",
         "regenerator-runtime": "^0.13.9",
         "sass": "^1.65.1",
         "sass-loader": "^13.0.0",
@@ -38,11 +34,19 @@
         "dev-server": "encore dev-server",
         "dev": "encore dev",
         "watch": "encore dev --watch",
-        "build": "encore production --progress"
+        "build": "encore production --progress",
+        "lint": "eslint assets",
+        "lint-fix": "eslint assets --ext .jsx,.js,.tsx  --fix"
     },
     "dependencies": {
+        "react-cropper": "^2.3.3",
+        "cropperjs": "^1.5.9",
         "@emotion/react": "^11.11.1",
         "@emotion/styled": "^11.11.0",
-        "@mui/material": "^5.14.5"
+        "@hotwired/stimulus": "^3.0.0",
+        "@mui/material": "^5.14.5",
+        "@symfony/stimulus-bridge": "^3.2.2",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0"
     }
 }
