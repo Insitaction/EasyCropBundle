@@ -10,6 +10,12 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class EasyCropExtension extends Extension implements PrependExtensionInterface
 {
+    public function load(array $configs, ContainerBuilder $container): void
+    {
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yaml');
+    }
+
     public function prepend(ContainerBuilder $container)
     {
         // Register the Dropzone form theme if TwigBundle is available
@@ -18,11 +24,5 @@ class EasyCropExtension extends Extension implements PrependExtensionInterface
         if (isset($bundles['TwigBundle'])) {
             $container->prependExtensionConfig('twig', ['form_themes' => ['@EasyCrop/form_theme.html.twig']]);
         }
-    }
-
-    public function load(array $configs, ContainerBuilder $container): void
-    {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
     }
 }

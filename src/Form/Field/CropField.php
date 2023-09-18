@@ -7,6 +7,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Asset;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\TextAlign;
 use EasyCorp\Bundle\EasyAdminBundle\Contracts\Field\FieldInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FieldTrait;
+use Exception;
 use Insitaction\EasyCropBundle\Form\Type\CropType;
 use Symfony\Contracts\Translation\TranslatableInterface;
 
@@ -45,6 +46,28 @@ final class CropField implements FieldInterface
         return $this;
     }
 
+    public function setFormTypeOption(string $optionName, $optionValue): self
+    {
+        if ('multiple' === $optionName) {
+            throw new Exception('The multiple option is currently not supported by CropField.');
+        }
+
+        $this->dto->setFormTypeOption($optionName, $optionValue);
+
+        return $this;
+    }
+
+    public function setFormTypeOptions(array $options): self
+    {
+        if (array_key_exists('multiple', $options)) {
+            throw new Exception('The multiple option is currently not supported by CropField.');
+        }
+
+        $this->dto->setFormTypeOptions($options);
+
+        return $this;
+    }
+
     /**
      * Relative to project's root directory (e.g. use 'public/uploads/' for `<your-project-dir>/public/uploads/`)
      * Default upload dir: `<your-project-dir>/public/uploads/images/`.
@@ -73,28 +96,6 @@ final class CropField implements FieldInterface
     public function setUploadedFileNamePattern($patternOrCallable): self
     {
         $this->setCustomOption(self::OPTION_UPLOADED_FILE_NAME_PATTERN, $patternOrCallable);
-
-        return $this;
-    }
-
-    public function setFormTypeOptions(array $options): self
-    {
-        if (array_key_exists('multiple', $options)) {
-            throw new \Exception('The multiple option is currently not supported by CropField.');
-        }
-
-        $this->dto->setFormTypeOptions($options);
-
-        return $this;
-    }
-
-    public function setFormTypeOption(string $optionName, $optionValue): self
-    {
-        if ('multiple' === $optionName) {
-            throw new \Exception('The multiple option is currently not supported by CropField.');
-        }
-
-        $this->dto->setFormTypeOption($optionName, $optionValue);
 
         return $this;
     }

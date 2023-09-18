@@ -28,7 +28,7 @@ final class CropConfigurator implements FieldConfiguratorInterface
 
     public function configure(FieldDto $field, EntityDto $entityDto, AdminContext $context): void
     {
-        $package = new Package(new JsonManifestVersionStrategy($this->projectDir.'/public/bundles/easycrop/manifest.json'));
+        $package = new Package(new JsonManifestVersionStrategy($this->projectDir . '/public/bundles/easycrop/manifest.json'));
         $field->addJsAsset(new AssetDto($package->getUrl('easycropbundle.js')));
         $field->addCssAsset(new AssetDto($package->getUrl('easycropbundle.css')));
 
