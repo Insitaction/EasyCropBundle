@@ -1,4 +1,4 @@
-.ea-fileupload>div>div>.input-group{height:30px}.hovered-nav-container{position:relative}.hovered-nav-container .hovered-nav{display:flex;padding:15px;position:absolute;width:100%}.hovered-nav-container .hovered-nav>div{width:50%}.hovered-nav-container .hovered-nav>div>:first-child,.hovered-nav-container .hovered-nav>div>:nth-child(2){margin-right:15px}.hovered-nav-container .hovered-nav>div:nth-child(2){text-align:right}
+.ea-fileupload>div>div>.input-group{height:30px}.hovered-nav-container{position:relative}.hovered-nav-container .hovered-nav{display:flex;padding:15px;position:relative;width:100%}.hovered-nav-container .hovered-nav>div{width:50%}.hovered-nav-container .hovered-nav>div>:first-child,.hovered-nav-container .hovered-nav>div>:nth-child(2){margin-right:15px}.hovered-nav-container .hovered-nav>div:nth-child(2){text-align:right}
 /*!
  * Cropper.js v1.5.13
  * https://fengyuanchen.github.io/cropperjs
