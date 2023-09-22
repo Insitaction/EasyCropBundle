@@ -76,7 +76,7 @@ export function Actions(props: Props) {
             </a>
           </span>
         )}
-        {(undefined !== url && undefined !== filename) && (
+        {(undefined === url && undefined !== filename) && (
           <span>
             <i className="fa fa-file-o" />
             {" "}
