@@ -1,5 +1,5 @@
 {
-    "version": "1.0.3",
+    "version": "1.0.4",
     "name": "insitaction/easycrop",
     "type": "symfony-bundle",
     "autoload": {
