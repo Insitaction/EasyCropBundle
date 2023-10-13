@@ -15,6 +15,7 @@ export default class extends AbstractController<HTMLButtonElement> {
     cropBtn: String,
     editBtn: String,
     deleteBtn: String,
+    mimeError: String,
   };
 
   declare readonly formFileValue: FormInput;
@@ -31,6 +32,8 @@ export default class extends AbstractController<HTMLButtonElement> {
 
   declare readonly deleteBtnValue: string;
 
+  declare readonly mimeErrorValue: string;
+
   connect() {
     import("react-dom").then((ReactDOM) => {
       ReactDOM.default.render(
@@ -39,6 +42,7 @@ export default class extends AbstractController<HTMLButtonElement> {
           cropBtn={this.cropBtnValue}
           editBtn={this.editBtnValue}
           deleteBtn={this.deleteBtnValue}
+          mimeError={this.mimeErrorValue}
           formCropped={this.formCroppedValue}
           formFile={this.formFileValue}
           formLabel={this.formLabelValue}

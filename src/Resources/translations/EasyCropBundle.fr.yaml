@@ -2,3 +2,5 @@ action:
     crop: Crop
     edit: Modifier
     delete: Supprimer
+error:
+    mime: Le cropper ne prend en charge que les types de fichiers suivants (jpg, jpeg, png, webp).
