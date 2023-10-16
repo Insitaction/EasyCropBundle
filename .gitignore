@@ -3,3 +3,7 @@
 /.php-cs-fixer.cache
 /phpstan.neon
 /node_modules/
+/composer.lock
+/yarn.lock
+/package-lock.json
+/yarn-error.log
