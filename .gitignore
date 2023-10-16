@@ -7,3 +7,11 @@
 /yarn.lock
 /package-lock.json
 /yarn-error.log
+/webpack.config.js
+/.idea/workspace.xml
+/.eslintrc.json
+/.nvmrc
+/.php-cs-fixer.php
+/.prettierrc
+/phpstan.neon.dist
+/tsconfig.json
