@@ -5,7 +5,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
-    .setOutputPath('./src/Resources/public/')
+    .setOutputPath('./public/')
     .setPublicPath('/bundles/easycrop')
     .setManifestKeyPrefix('')
     .addEntry('easycropbundle', './assets/app.tsx')
