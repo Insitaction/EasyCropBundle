@@ -9,4 +9,4 @@ services:
             $projectDir: '%kernel.project_dir%'
 
     Insitaction\EasyCropBundle\Form\:
-        resource: '../../Form'
+        resource: '../src/Form'
