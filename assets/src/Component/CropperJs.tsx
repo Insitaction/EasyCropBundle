@@ -45,6 +45,7 @@ export function CropperJs(props: Props) {
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault()
+    setFileError([])
     if (e.target.files === undefined || e.target.files === null || e.target.files.item(0) === null) {
       return
     }
