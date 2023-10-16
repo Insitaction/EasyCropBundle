@@ -1,0 +1,20 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services https://symfony.com/schema/dic/services/services-1.0.xsd"
+>
+    <services>
+        <defaults public="false"/>
+
+        <service id="Insitaction\EasyCropBundle\Form\Field\Configurator\CropConfigurator">
+            <argument key="$projectDir">%kernel.project_dir%</argument>
+            <tag name="ea.field_configurator" />
+        </service>
+        <service id="Insitaction\EasyCropBundle\Form\Field\CropField"/>
+        <service id="Insitaction\EasyCropBundle\Form\Type\CropType">
+            <argument key="$projectDir">%kernel.project_dir%</argument>
+            <tag name="form.type" />
+        </service>
+    </services>
+</container>
