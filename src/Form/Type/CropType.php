@@ -72,7 +72,7 @@ final class CropType extends FileUploadType
     {
         /** @var FormInterface[] $children */
         $children = iterator_to_array($forms);
-        /** @var UploadedFile $uploadedFile */
+        /** @var UploadedFile|null $uploadedFile */
         $uploadedFile = $children['file']->getData();
         $uploadedFiles = $children['cropped']->getData();
 
@@ -80,7 +80,7 @@ final class CropType extends FileUploadType
             $currentFiles = [];
         }
 
-        if (UPLOAD_ERR_OK !== $uploadedFile->getError()) {
+        if ($uploadedFile instanceof UploadedFile && UPLOAD_ERR_OK !== $uploadedFile->getError()) {
             return;
         }
 
