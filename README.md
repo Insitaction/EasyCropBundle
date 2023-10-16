@@ -52,6 +52,14 @@ Symfony validation is not yet implemented but will be introduced in a future ver
 ### Multiple upload/crop:
 The multiple option is currently not supported by `CropField` but will be introduced in a future version.
 
+## Versions
+
+| PHP version | Symfony version | Composer flags |
+|-------------|:---------------:|----------------|
+| 8.2         |       6.*       |                |
+|             |                 |                |
+|             |                 |                |
+
 ## Contributing
 
 If you encounter any issues or would like to contribute to the EasyCrop Bundle, feel free to create a pull request or submit an issue on the GitHub repository.
