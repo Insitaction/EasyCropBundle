@@ -19,6 +19,11 @@ final class CropType extends FileUploadType
     public const OPTION_RESIZE = 'resize';
     public const OPTION_WIDTH = 'width';
 
+    public function __construct(string $projectDir)
+    {
+        parent::__construct($projectDir);
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $height = $options[self::OPTION_HEIGHT];
