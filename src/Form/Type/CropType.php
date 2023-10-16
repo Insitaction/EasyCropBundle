@@ -28,7 +28,7 @@ final class CropType extends FileUploadType
         $enableResize = $options[self::OPTION_RESIZE];
 
         unset($options[self::OPTION_HEIGHT], $options[self::OPTION_WIDTH], $options[self::OPTION_FORCE_SIZE_VALIDATION],
-            $options[self::OPTION_FORMAT], $options[self::OPTION_HEIGHT]);
+            $options[self::OPTION_FORMAT], $options[self::OPTION_RESIZE]);
 
         parent::buildForm($builder, $options);
         // $builder->remove('file');
