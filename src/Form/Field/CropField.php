@@ -39,6 +39,20 @@ final class CropField implements FieldInterface
         ;
     }
 
+    public function enableResize(bool $force): self
+    {
+        $this->setFormTypeOption(CropType::OPTION_RESIZE, $force);
+
+        return $this;
+    }
+
+    public function enableSizeValidation(bool $force): self
+    {
+        $this->setFormTypeOption(CropType::OPTION_FORCE_SIZE_VALIDATION, $force);
+
+        return $this;
+    }
+
     public function setBasePath(string $path): self
     {
         $this->setCustomOption(self::OPTION_BASE_PATH, $path);
@@ -46,6 +60,18 @@ final class CropField implements FieldInterface
         return $this;
     }
 
+    public function setFormat(string $format): self
+    {
+        if (!in_array($format, ['PNG', 'JPEG', 'WEBP'], true)) {
+            throw new Exception('Only \'PNG\', \'JPEG\', \'WEBP\' are supported formats.');
+        }
+
+        $this->setFormTypeOption(CropType::OPTION_FORMAT, $format);
+
+        return $this;
+    }
+
+    /** @phpstan-ignore-next-line */
     public function setFormTypeOption(string $optionName, $optionValue): self
     {
         if ('multiple' === $optionName) {
@@ -57,6 +83,7 @@ final class CropField implements FieldInterface
         return $this;
     }
 
+    /** @phpstan-ignore-next-line */
     public function setFormTypeOptions(array $options): self
     {
         if (array_key_exists('multiple', $options)) {
@@ -64,6 +91,13 @@ final class CropField implements FieldInterface
         }
 
         $this->dto->setFormTypeOptions($options);
+
+        return $this;
+    }
+
+    public function setHeight(int $height): self
+    {
+        $this->setFormTypeOption(CropType::OPTION_HEIGHT, $height);
 
         return $this;
     }
@@ -80,7 +114,7 @@ final class CropField implements FieldInterface
     }
 
     /**
-     * @param string|Closure $patternOrCallable
+     * @param Closure|string $patternOrCallable
      *
      * If it's a string, uploaded files will be renamed according to the given pattern.
      * The pattern can include the following special values:
@@ -93,9 +127,16 @@ final class CropField implements FieldInterface
      * return a string with the new filename.
      * (e.g. fn(UploadedFile $file) => sprintf('upload_%d_%s.%s', random_int(1, 999), $file->getFilename(), $file->guessExtension()))
      */
-    public function setUploadedFileNamePattern($patternOrCallable): self
+    public function setUploadedFileNamePattern(Closure|string $patternOrCallable): self
     {
         $this->setCustomOption(self::OPTION_UPLOADED_FILE_NAME_PATTERN, $patternOrCallable);
+
+        return $this;
+    }
+
+    public function setWidth(int $width): self
+    {
+        $this->setFormTypeOption(CropType::OPTION_WIDTH, $width);
 
         return $this;
     }

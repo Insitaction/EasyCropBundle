@@ -1,24 +1,26 @@
-import React, { useRef } from "react";
-import Cropper, { ReactCropperElement } from "react-cropper";
-import "cropperjs/dist/cropper.css";
-import { Box, Modal, Typography } from "@mui/material";
-import { File } from "../Type/File";
+import React, { useRef } from "react"
+import Cropper, { ReactCropperElement } from "react-cropper"
+import "cropperjs/dist/cropper.css"
+import { Box, Modal, Typography } from "@mui/material"
+import { resize } from "../Utils/Resize"
+import { FileObject } from "../Type/FileObject"
+import { Resize } from "../Type/FormCropped"
+import { Translations } from "../Type/Translations"
 
 interface Props {
-  cropBtn: string;
-  setCropData: React.Dispatch<React.SetStateAction<string>>;
-  setPreviewImages: React.Dispatch<React.SetStateAction<string[] | File[]>>;
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  image: string;
-  open: boolean;
+  translations: Translations
+  setCropData: React.Dispatch<React.SetStateAction<string>>
+  setPreviewImages: React.Dispatch<React.SetStateAction<string[] | FileObject[]>>
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+  image: string
+  open: boolean
+  size: Resize
 }
 
 export function CropperJsModal(props: Props) {
-  const cropperRef = useRef<ReactCropperElement>(null);
-  const {
-    cropBtn, setPreviewImages, setCropData, image, open, setOpen,
-  } = props;
-  const handleClose = () => setOpen(false);
+  const cropperRef = useRef<ReactCropperElement>(null)
+  const { size, translations, setPreviewImages, setCropData, image, open, setOpen } = props
+  const handleClose = () => setOpen(false)
 
   const style = {
     position: "absolute" as const,
@@ -30,18 +32,22 @@ export function CropperJsModal(props: Props) {
     border: "2px solid #000",
     boxShadow: 24,
     p: 4,
-  };
+  }
 
   const getCropData = () => {
     if (typeof cropperRef.current?.cropper !== "undefined") {
-      setCropData(cropperRef.current?.cropper.getCroppedCanvas()
-        .toDataURL());
-      setPreviewImages([cropperRef.current?.cropper.getCroppedCanvas()
-        .toDataURL()]);
+      if (size.enableResize) {
+        cropperRef.current?.cropper
+          .getCroppedCanvas()
+          .toBlob((blob) => resize(size, setPreviewImages, setCropData, blob))
+      } else {
+        setCropData(cropperRef.current?.cropper.getCroppedCanvas().toDataURL())
+        setPreviewImages([cropperRef.current?.cropper.getCroppedCanvas().toDataURL()])
+      }
     }
 
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <Modal
@@ -71,18 +77,16 @@ export function CropperJsModal(props: Props) {
               checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
             />
           </div>
-          <div style={{
-            textAlign: "center",
-            padding: "20px",
-          }}
+          <div
+            style={{
+              textAlign: "center",
+              padding: "20px",
+            }}
           >
             <button type="button" className="btn btn-primary action-save" onClick={getCropData}>
               <span className="btn-label">
                 <i className="action-icon fa fa-crop" />
-                <span className="action-label">
-                  {" "}
-                  {cropBtn}
-                </span>
+                <span className="action-label"> {translations.cropBtn}</span>
               </span>
             </button>
           </div>
@@ -90,7 +94,7 @@ export function CropperJsModal(props: Props) {
         </Typography>
       </Box>
     </Modal>
-  );
+  )
 }
 
-export default CropperJsModal;
+export default CropperJsModal

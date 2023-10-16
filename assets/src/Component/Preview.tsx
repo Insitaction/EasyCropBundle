@@ -1,21 +1,19 @@
-import React from "react";
-import { RenderData } from "../Type/RenderData";
-import Actions from "./Actions";
-import { File } from "../Type/File";
+import React from "react"
+import { RenderData } from "../Type/RenderData"
+import { Actions } from "./Actions"
+import { FileObject } from "../Type/FileObject"
 
 interface Props {
-  file: string|File,
-  modifyId: string,
-  renderData: RenderData,
-  setToDelete: React.Dispatch<React.SetStateAction<boolean>>,
-  editBtn: string,
-  deleteBtn: string,
+  file: string | FileObject
+  modifyId: string
+  renderData: RenderData
+  setToDelete: React.Dispatch<React.SetStateAction<boolean>>
+  editBtn: string
+  deleteBtn: string
 }
 
 export function Preview(props: Props) {
-  const {
-    file, editBtn, deleteBtn, setToDelete, renderData, modifyId,
-  } = props;
+  const { file, editBtn, deleteBtn, setToDelete, renderData, modifyId } = props
 
   if (typeof file === "string") {
     return (
@@ -28,21 +26,17 @@ export function Preview(props: Props) {
             setToDelete={setToDelete}
             modifyId={modifyId}
           />
-          <img
-            alt={file}
-            style={{ maxWidth: "100%", maxHeight: "200px" }}
-            src={file}
-          />
+          <img alt={file} style={{ maxWidth: "100%", maxHeight: "200px" }} src={file} />
         </td>
       </tr>
-    );
+    )
   }
 
   if (undefined === file.filename) {
-    return false;
+    return false
   }
 
-  const url = `${window.location.protocol}//${window.location.hostname}/${file.filepath}`;
+  const url = `${window.location.protocol}//${window.location.hostname}/${file.filepath}`
 
   return (
     <tr>
@@ -58,22 +52,13 @@ export function Preview(props: Props) {
           deleteBtn={deleteBtn}
         />
         <a href={url}>
-          {
-            ["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "tiff", "tif", "ico"]
-              .includes(file.extension)
-            && (
-              <img
-                alt={file.filename}
-                style={{ maxWidth: "100%", maxHeight: "200px" }}
-                src={url}
-              />
-            )
-          }
+          {["jpg", "jpeg", "png", "gif", "webp", "svg", "bmp", "tiff", "tif", "ico"].includes(file.extension) && (
+            <img alt={file.filename} style={{ maxWidth: "100%", maxHeight: "200px" }} src={url} />
+          )}
         </a>
-
       </td>
     </tr>
-  );
+  )
 }
 
-export default Preview;
+export default Preview

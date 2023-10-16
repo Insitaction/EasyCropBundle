@@ -1,94 +1,85 @@
-import React, {useState, useEffect, useRef} from "react";
-import "cropperjs/dist/cropper.css";
-import { FormInput } from "../Type/FormInput";
-import { FormCropped } from "../Type/FormCropped";
-import { FormLabel } from "../Type/FormLabel";
-import { RenderData } from "../Type/RenderData";
-import { File } from "../Type/File";
-import { CropperJsModal } from "./CropperJsModal";
-import Preview from "./Preview";
+import React, { useState, useEffect, useRef } from "react"
+import "cropperjs/dist/cropper.css"
+import { FormInput } from "../Type/FormInput"
+import { FormCropped } from "../Type/FormCropped"
+import { FormLabel } from "../Type/FormLabel"
+import { RenderData } from "../Type/RenderData"
+import { CropperJsModal } from "./CropperJsModal"
+import { Preview } from "./Preview"
+import { FileObject } from "../Type/FileObject"
+import { Translations } from "../Type/Translations"
+import { sizeValidation, mimeValidation } from "../Utils/Validation"
+import { loadImage } from "../Utils/Utils"
+import { FileToLoad } from "../Type/FileToLoad"
 
 interface Props {
-  cropBtn: string;
-  editBtn: string;
-  deleteBtn: string;
-  mimeError: string;
-  renderData?: RenderData|null;
-  formFile?: FormInput|null;
-  formLabel?: FormLabel|null;
-  formCropped?: FormCropped|null
+  translations: Translations
+  renderData: RenderData
+  formFile: FormInput
+  formLabel: FormLabel
+  formCropped: FormCropped
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore fields are required
-const defaultProps: Props = {
-  renderData: null,
-  formFile: null,
-  formLabel: null,
-  formCropped: null,
-};
-
 export function CropperJs(props: Props) {
-  const [open, setOpen] = useState(false);
-  const [image, setImage] = useState("");
-  const [previewImages, setPreviewImages] = useState<File[]|string[]>([]);
-  const [toDelete, setToDelete] = useState(false);
-  const [cropData, setCropData] = useState("");
-  const [fileError, setFileError] = useState(false);
-  const {
-    mimeError, renderData, cropBtn, editBtn, deleteBtn, formLabel, formFile, formCropped,
-  } = props;
-  const labelRef = useRef();
+  const [open, setOpen] = useState(false)
+  const [image, setImage] = useState("")
+  const [previewImages, setPreviewImages] = useState<FileObject[] | string[]>([])
+  const [toDelete, setToDelete] = useState(false)
+  const [cropData, setCropData] = useState("")
+  const [fileError, setFileError] = useState<Array<string>>([])
+
+  const { renderData, translations, formLabel, formFile, formCropped } = props
+  const labelRef = useRef<HTMLLabelElement | null>(null)
 
   useEffect(() => {
     if (undefined !== renderData?.currentFiles) {
-      setPreviewImages(renderData?.currentFiles);
+      setPreviewImages(renderData?.currentFiles)
     }
-  }, [props, renderData?.currentFiles]);
+  }, [props, renderData?.currentFiles])
 
   useEffect(() => {
     if (toDelete) {
-      setPreviewImages([]);
+      setPreviewImages([])
     }
-  }, [toDelete]);
+  }, [toDelete])
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault();
+    e.preventDefault()
     if (e.target.files === undefined || e.target.files === null || e.target.files.item(0) === null) {
-      return;
+      return
     }
 
-    const file = e.target.files.item(0);
+    const file = e.target.files.item(0)
 
     if (file === null) {
-      return;
+      return
     }
 
-    if (!["image/jpeg", "image/png", "image/webp"].includes(file.type)) {
-      e.target.value = '';
-      // @ts-ignore
-      labelRef?.current?.innerHTML = "";
-      setFileError(true)
-      return;
+    if (!mimeValidation(labelRef, file, e)) {
+      setFileError([translations.mimeError])
+      return
     }
-    setFileError(false)
 
-    const reader = new FileReader();
-    reader.onload = () => {
-      if (typeof reader.result === "string") {
-        setImage(reader.result);
-      }
-    };
-    reader.readAsDataURL(file);
-    setOpen(true);
-  };
+    const fileToLoad: FileToLoad = { file, setImage, setOpen }
 
-  if (formLabel !== null && formLabel !== undefined
-    && formFile !== null && formFile !== undefined
-    && formCropped !== null && formCropped !== undefined
-    && renderData !== null && renderData !== undefined
+    if (formCropped?.size.enableSizeValidation) {
+      sizeValidation(fileToLoad, setFileError, translations, formCropped.size)
+      return
+    }
+
+    loadImage(fileToLoad)
+  }
+
+  if (
+    formLabel !== null &&
+    formLabel !== undefined &&
+    formFile !== null &&
+    formFile !== undefined &&
+    formCropped !== null &&
+    formCropped !== undefined &&
+    renderData !== null &&
+    renderData !== undefined
   ) {
-
     return (
       <div>
         <div className="input-group" style={{ height: previewImages.length === 0 ? "30px" : "0" }}>
@@ -110,14 +101,9 @@ export function CropperJs(props: Props) {
             value={cropData}
             required={formFile.required && previewImages.length === 0}
           />
-          { previewImages.length === 0 && (
+          {previewImages.length === 0 && (
             <>
-              <label
-                // @ts-ignore
-                ref={labelRef}
-                htmlFor={formLabel.for}
-                className={formLabel.class}
-              >
+              <label ref={labelRef} htmlFor={formLabel.for} className={formLabel.class}>
                 <span />
               </label>
               <div className="input-group-text">
@@ -129,41 +115,38 @@ export function CropperJs(props: Props) {
             </>
           )}
         </div>
-        {fileError && <div className="invalid-feedback d-block">{ mimeError }</div>}
 
-        { previewImages.length !== 0 && (
+        {previewImages.length !== 0 && (
           <div className=" form-control fileupload-list">
             <table className="fileupload-table">
               <tbody>
-
-              {
-                previewImages.map((file) => (
+                {previewImages.map((file) => (
                   <Preview
                     key={typeof file === "string" ? file : file.filename}
                     file={file}
                     modifyId={formFile?.id}
                     renderData={renderData}
                     setToDelete={setToDelete}
-                    editBtn={editBtn}
-                    deleteBtn={deleteBtn}
+                    editBtn={translations.editBtn}
+                    deleteBtn={translations.deleteBtn}
                   />
-                ))
-              }
+                ))}
               </tbody>
             </table>
           </div>
         )}
 
         <CropperJsModal
-          cropBtn={cropBtn}
+          translations={translations}
           image={image}
+          size={formCropped.size}
           setCropData={setCropData}
           setPreviewImages={setPreviewImages}
           setOpen={setOpen}
           open={open}
         />
 
-        { renderData?.allow_delete && (
+        {renderData?.allow_delete && (
           <div className="d-none">
             <div className="form-check">
               <label className="form-check-label" htmlFor={renderData?.deleteId}>
@@ -178,15 +161,16 @@ export function CropperJs(props: Props) {
             </div>
           </div>
         )}
+        {fileError.map((error) => (
+          <div className="invalid-feedback d-block">{error}</div>
+        ))}
       </div>
-    );
+    )
   }
 
-  console.error("Unexpected error, some props are undefined.");
+  console.error("Unexpected error, some props are undefined.")
 
-  return false;
+  return false
 }
 
-CropperJs.defaultProps = defaultProps;
-
-export default CropperJs;
+export default CropperJs

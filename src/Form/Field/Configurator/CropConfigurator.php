@@ -32,11 +32,14 @@ final class CropConfigurator implements FieldConfiguratorInterface
         $field->addJsAsset(new AssetDto($package->getUrl('easycropbundle.js')));
         $field->addCssAsset(new AssetDto($package->getUrl('easycropbundle.css')));
 
+        /** @var string|null $configuredBasePath */
         $configuredBasePath = $field->getCustomOption(ImageField::OPTION_BASE_PATH);
+        /** @var string|array<int, UploadedFile>|null $value */
+        $value = $field->getValue();
 
-        $formattedValue = \is_array($field->getValue())
-            ? $this->getImagesPaths($field->getValue(), $configuredBasePath)
-            : $this->getImagePath($field->getValue(), $configuredBasePath);
+        $formattedValue = is_array($value)
+            ? $this->getImagesPaths($value, $configuredBasePath)
+            : $this->getImagePath($value, $configuredBasePath);
         $field->setFormattedValue($formattedValue);
 
         $field->setFormTypeOption('upload_filename', $field->getCustomOption(ImageField::OPTION_UPLOADED_FILE_NAME_PATTERN));
@@ -46,12 +49,12 @@ final class CropConfigurator implements FieldConfiguratorInterface
             $field->setTemplateName('label/empty');
         }
 
-        if (!\in_array($context->getCrud()->getCurrentPage(), [Crud::PAGE_EDIT, Crud::PAGE_NEW], true)) {
+        if (!in_array($context->getCrud()?->getCurrentPage(), [Crud::PAGE_EDIT, Crud::PAGE_NEW], true)) {
             return;
         }
 
         $relativeUploadDir = $field->getCustomOption(ImageField::OPTION_UPLOAD_DIR);
-        if (null === $relativeUploadDir) {
+        if (!is_string($relativeUploadDir)) {
             throw new InvalidArgumentException(sprintf('The "%s" image field must define the directory where the images are uploaded using the setUploadDir() method.', $field->getProperty()));
         }
         $relativeUploadDir = u($relativeUploadDir)->trimStart(\DIRECTORY_SEPARATOR)->ensureEnd(\DIRECTORY_SEPARATOR)->toString();
@@ -85,15 +88,18 @@ final class CropConfigurator implements FieldConfiguratorInterface
     }
 
     /**
-     * @param array<int, UploadedFile>|null $images
+     * @param array<int, UploadedFile> $images
      *
      * @return list<string>
      */
-    private function getImagesPaths(?array $images, ?string $basePath): array
+    private function getImagesPaths(array $images, ?string $basePath): array
     {
         $imagesPaths = [];
         foreach ($images as $image) {
-            $imagesPaths[] = $this->getImagePath($image, $basePath);
+            $imagePath = $this->getImagePath($image, $basePath);
+            if (null !== $imagePath) {
+                $imagesPaths[] = $imagePath;
+            }
         }
 
         return $imagesPaths;

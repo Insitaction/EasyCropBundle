@@ -4,3 +4,5 @@ action:
     delete: Delete
 error:
     mime: The cropper only supports the following file types (jpg, jpeg, png, webp).
+    height: The image must have a minimum height (%height%px).
+    width: The image must have a minimum width (%width%px).
