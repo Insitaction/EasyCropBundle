@@ -22,6 +22,7 @@
         "eslint-plugin-react-hooks": "^4.6.0",
         "file-loader": "^6.0.0",
         "postcss-loader": "^7.0.0",
+        "prettier": "^3.0.3",
         "regenerator-runtime": "^0.13.9",
         "sass": "^1.65.1",
         "sass-loader": "^13.0.0",
