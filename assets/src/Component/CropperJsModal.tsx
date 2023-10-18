@@ -65,13 +65,14 @@ export function CropperJsModal(props: Props) {
                 width: "100%",
               }}
               initialAspectRatio={1}
+              aspectRatio={size.enableResize ? size.width / size.height : 0}
               preview=".img-preview"
               src={image}
               ref={cropperRef}
               viewMode={1}
               guides
-              minCropBoxHeight={10}
-              minCropBoxWidth={10}
+              minCropBoxHeight={size.enableResize ? size.height : 10}
+              minCropBoxWidth={size.enableResize ? size.width : 10}
               background={false}
               responsive
               checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
