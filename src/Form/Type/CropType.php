@@ -66,7 +66,7 @@ final class CropType extends FileUploadType
     }
 
     /**
-     * @param array<int, UploadedFile>|mixed|null $currentFiles
+     * @param UploadedFile|mixed|null $currentFiles
      */
     public function mapFormsToData($forms, &$currentFiles): void
     {
@@ -75,10 +75,6 @@ final class CropType extends FileUploadType
         /** @var UploadedFile|null $uploadedFile */
         $uploadedFile = $children['file']->getData();
         $uploadedFiles = $children['cropped']->getData();
-
-        if (!is_array($currentFiles)) {
-            $currentFiles = [];
-        }
 
         if ($uploadedFile instanceof UploadedFile && UPLOAD_ERR_OK !== $uploadedFile->getError()) {
             return;
@@ -112,10 +108,6 @@ final class CropType extends FileUploadType
             return;
         }
 
-        if ($state->isAddAllowed() && !$state->isDelete()) {
-            $currentFiles[] = $uploadedFiles; // TODO previous update, multiple file crop
-        } else {
-            $currentFiles = $uploadedFiles;
-        }
+        $currentFiles = $uploadedFiles;
     }
 }
