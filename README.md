@@ -75,10 +75,10 @@ The multiple option is currently not supported by `CropField` but will be introd
 ## Versions
 
 | PHP version | Symfony version | Composer flags |
-|-------------|:---------------:|----------------|
-| 8.2         |       6.*       |                |
-|             |                 |                |
-|             |                 |                |
+|-------------|:---------------:|---------------|
+| 8.2         |    6.x / 7.x    |                |
+|             |                 |               |
+|             |                 |               |
 
 ## Contributing
 
