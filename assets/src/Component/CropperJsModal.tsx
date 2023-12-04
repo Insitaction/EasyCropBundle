@@ -74,7 +74,7 @@ export function CropperJsModal(props: Props) {
               minCropBoxHeight={size.enableResize ? size.height : 10}
               minCropBoxWidth={size.enableResize ? size.width : 10}
               background={false}
-              responsive
+              responsive={true}
               checkOrientation={false} // https://github.com/fengyuanchen/cropperjs/issues/671
             />
           </div>

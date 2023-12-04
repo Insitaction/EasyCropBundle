@@ -22,9 +22,29 @@ The primary feature of this bundle is the `CropField`, which enables users to up
 
 ## Usage
 
-Don't forget to add the theme file for the formatting to be effective
+1. Add to bundle.php
 
-1. Add the CropField to your EasyAdmin configuration:
+```php
+#bundles.php
+
+return [
+    Insitaction\EasyCropBundle\EasyCropBundle::class => ['all' => true],
+    Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
+];
+```
+
+2. Load form theme in Easyadmin
+
+```php
+    public function configureCrud(): Crud
+    {
+        return parent::configureCrud()
+            ->addFormTheme('@EasyCrop/form_theme.html.twig')
+            ;
+    }
+```
+
+3Add the CropField to your EasyAdmin configuration:
 
 ```php
 
